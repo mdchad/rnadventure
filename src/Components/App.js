@@ -6,10 +6,19 @@ class App extends Component {
     render() {
         return (
             <div>
-                <Navigation/>
+                <div className="navbar">
+                    {menu.linkNames.map((link, index) =>
+                        <Navigation css={menu.css} key={index} names={link}/>
+                    )}
+                </div>
             </div>
         )
     }
+}
+
+const menu = {
+    linkNames: ['RN adventure', 'About Us', 'Package', 'Places', 'Contact Us', 'Book Now'],
+    css: 'links'
 }
 
 export default App;

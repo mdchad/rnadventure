@@ -2,32 +2,30 @@ import React, { Component } from 'react';
 import './navigation.css'
 import logo from '../../flight.svg'
 
-export default class Navigation extends Component {
-    render() {
+const Navigation = (props) => {
+    if (props.names === 'Book Now') {
         return (
-            <div className="navbar">
-                <div>
-                    <a href="#" className="brand-name links">
-                        <img src={logo} className="logo"/>
-                        <span>RN<span className="adventure">adventure</span></span>
-                    </a>
-                    <a className="links" href="#">
-                        <span>About Us</span>
-                    </a>
-                    <a className="links" href="#">
-                        <span>Package</span>
-                    </a>
-                    <a className="links" href="#">
-                        <span>Places</span>
-                    </a>
-                    <a className="links" href="#">
-                        <span>Contact Us</span>
-                    </a>
-                    <a href="#" className="book-button">
-                        <span>Book Now</span>
-                    </a>
-                </div>
-            </div>
+            <a href="#" className="book-button">
+                <span>{props.names}</span>
+            </a>
         )
     }
+
+    if (props.names === 'RN adventure') {
+        let name = props.names.split(' ')
+        return (
+            <a href="#" className="brand-name">
+                <img src={logo} className="logo"/>
+                <span>{name[0]}</span><span className="adventure">{name[1]}</span>
+            </a>
+        )
+    }
+
+    return (
+        <a href="#" className="links">
+            <span>{props.names}</span>
+        </a>
+    )
 }
+
+export default Navigation
