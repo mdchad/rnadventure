@@ -1,0 +1,56 @@
+{
+  "name": "rnadventure",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "catalog": {
+      "dotenv": "^17.2.2",
+      "zod": "^4.1.13",
+      "typescript": "^5",
+      "@libsql/client": "0.15.15",
+      "libsql": "0.5.22",
+      "better-auth": "^1.4.9",
+      "@better-auth/expo": "^1.4.9"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "check-types": "turbo check-types",
+    "dev:native": "turbo -F native dev",
+    "dev:web": "turbo -F web dev",
+    "db:push": "turbo -F @rnadventure/db db:push",
+    "db:studio": "turbo -F @rnadventure/db db:studio",
+    "db:generate": "turbo -F @rnadventure/db db:generate",
+    "db:migrate": "turbo -F @rnadventure/db db:migrate",
+    "db:local": "turbo -F @rnadventure/db db:local",
+    "check": "oxlint && oxfmt --write",
+    "prepare": "husky"
+  },
+  "dependencies": {
+    "@rnadventure/env": "workspace:*",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@rnadventure/config": "workspace:*",
+    "@types/node": "^22.13.14",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "oxfmt": "^0.26.0",
+    "oxlint": "^1.41.0",
+    "turbo": "^2.6.3",
+    "typescript": "catalog:"
+  },
+  "lint-staged": {
+    "*": [
+      "oxlint",
+      "oxfmt --write"
+    ]
+  },
+  "packageManager": "bun@1.3.2"
+}

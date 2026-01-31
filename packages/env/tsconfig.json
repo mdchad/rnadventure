@@ -1,0 +1,3 @@
+{
+  "extends": "@rnadventure/config/tsconfig.base.json"
+}

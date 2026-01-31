@@ -1,0 +1,25 @@
+{
+  "name": "@rnadventure/auth",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {},
+  "dependencies": {
+    "@better-auth/expo": "catalog:",
+    "@rnadventure/db": "workspace:*",
+    "@rnadventure/env": "workspace:*",
+    "better-auth": "catalog:",
+    "dotenv": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@rnadventure/config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
