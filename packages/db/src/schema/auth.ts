@@ -7,6 +7,10 @@ export const user = sqliteTable("user", {
   email: text("email").notNull().unique(),
   emailVerified: integer("email_verified", { mode: "boolean" }).default(false).notNull(),
   image: text("image"),
+  role: text("role").default("user").notNull(),
+  banned: integer("banned", { mode: "boolean" }).default(false),
+  banReason: text("ban_reason"),
+  banExpires: integer("ban_expires", { mode: "timestamp_ms" }),
   createdAt: integer("created_at", { mode: "timestamp_ms" })
     .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
     .notNull(),
@@ -85,9 +89,61 @@ export const verification = sqliteTable(
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
+// Organization tables for tour groups
+export const organization = sqliteTable("organization", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").unique(),
+  logo: text("logo"),
+  createdAt: integer("created_at", { mode: "timestamp_ms" })
+    .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+    .notNull(),
+  metadata: text("metadata"),
+});
+
+export const member = sqliteTable(
+  "member",
+  {
+    id: text("id").primaryKey(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    role: text("role").notNull(),
+    createdAt: integer("created_at", { mode: "timestamp_ms" })
+      .default(sql`(cast(unixepoch('subsecond') * 1000 as integer))`)
+      .notNull(),
+  },
+  (table) => [
+    index("member_organizationId_idx").on(table.organizationId),
+    index("member_userId_idx").on(table.userId),
+  ],
+);
+
+export const invitation = sqliteTable(
+  "invitation",
+  {
+    id: text("id").primaryKey(),
+    organizationId: text("organization_id")
+      .notNull()
+      .references(() => organization.id, { onDelete: "cascade" }),
+    email: text("email").notNull(),
+    role: text("role"),
+    status: text("status").notNull(),
+    expiresAt: integer("expires_at", { mode: "timestamp_ms" }).notNull(),
+    inviterId: text("inviter_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+  },
+  (table) => [index("invitation_organizationId_idx").on(table.organizationId)],
+);
+
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
+  members: many(member),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -100,6 +156,33 @@ export const sessionRelations = relations(session, ({ one }) => ({
 export const accountRelations = relations(account, ({ one }) => ({
   user: one(user, {
     fields: [account.userId],
+    references: [user.id],
+  }),
+}));
+
+export const organizationRelations = relations(organization, ({ many }) => ({
+  members: many(member),
+  invitations: many(invitation),
+}));
+
+export const memberRelations = relations(member, ({ one }) => ({
+  organization: one(organization, {
+    fields: [member.organizationId],
+    references: [organization.id],
+  }),
+  user: one(user, {
+    fields: [member.userId],
+    references: [user.id],
+  }),
+}));
+
+export const invitationRelations = relations(invitation, ({ one }) => ({
+  organization: one(organization, {
+    fields: [invitation.organizationId],
+    references: [organization.id],
+  }),
+  inviter: one(user, {
+    fields: [invitation.inviterId],
     references: [user.id],
   }),
 }));

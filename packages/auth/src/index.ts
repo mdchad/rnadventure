@@ -5,6 +5,7 @@ import { env } from "@rnadventure/env/server";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
+import { admin, organization } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -16,5 +17,15 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-  plugins: [nextCookies(), expo()],
+  plugins: [
+    nextCookies(),
+    expo(),
+    admin(),
+    organization({
+      async sendInvitationEmail(data) {
+        // TODO: Implement email sending for tour group invitations
+        console.log("Invitation email:", data);
+      },
+    }),
+  ],
 });
