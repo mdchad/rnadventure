@@ -19,8 +19,7 @@ export default function SearchInput({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="border-none outline-none text-base font-semibold text-[#080808] w-full bg-transparent"
-        style={{ fontFamily: "'Outfit', sans-serif" }}
+        className="border-none outline-none text-base font-semibold text-venture-black w-full bg-transparent font-[family-name:var(--font-outfit)]"
       />
     </div>
   );

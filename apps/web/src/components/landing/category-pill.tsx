@@ -13,18 +13,16 @@ export default function CategoryPill({
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
+  const borderColor = isActive || isHovered ? "border-venture-black" : "border-[#eee]";
+  const bgColor = isActive ? "bg-venture-black" : "bg-white";
+  const textColor = isActive ? "text-white" : "text-venture-black";
+
   return (
     <button
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="px-6 py-3 rounded-full font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap"
-      style={{
-        border: isActive ? "1px solid #080808" : isHovered ? "1px solid #080808" : "1px solid #eee",
-        background: isActive ? "#080808" : "#ffffff",
-        color: isActive ? "#ffffff" : "#080808",
-        fontFamily: "'Outfit', sans-serif",
-      }}
+      className={`px-6 py-3 rounded-full font-semibold cursor-pointer transition-all duration-200 whitespace-nowrap border ${borderColor} ${bgColor} ${textColor} font-[family-name:var(--font-outfit)]`}
     >
       {label}
     </button>
