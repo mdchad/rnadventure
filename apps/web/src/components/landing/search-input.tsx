@@ -12,7 +12,7 @@ export default function SearchInput({
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
-    <div className="flex-1 px-5 flex flex-col justify-center border-r border-[#eee]">
+    <div className="px-5 flex flex-col justify-center border-r border-[#eee]">
       <label className="text-xs font-bold text-[#888] mb-1 uppercase tracking-wider">{label}</label>
       <input
         type="text"

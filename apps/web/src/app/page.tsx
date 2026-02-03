@@ -3,12 +3,13 @@
 import { useState } from "react";
 import Navigation from "@/components/landing/navigation";
 import SearchInput from "@/components/landing/search-input";
+import DatePickerInput from "@/components/landing/date-picker-input";
 import TourCard from "@/components/landing/tour-card";
 import CategoryPill from "@/components/landing/category-pill";
 
 export default function Home() {
   const [location, setLocation] = useState("Singapore");
-  const [date, setDate] = useState("");
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [activeCategory, setActiveCategory] = useState("All");
 
   const categories = ["All", "City Tour", "Food Tour", "Jaulah Masjid", "Edutrip"];
@@ -67,18 +68,18 @@ export default function Home() {
               guide. Flexible schedules, multiple languages available.
             </p>
 
-            <div className="bg-white border border-[#e4e4e7] p-3 rounded-[28px] flex items-center shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] max-w-[500px]">
+            <div className="bg-white border border-[#e4e4e7] p-3 rounded-[28px] grid grid-cols-[1fr_1fr_auto] items-center shadow-[0_20px_40px_-10px_rgba(0,0,0,0.08)] max-w-[500px]">
               <SearchInput
                 label="Tour Type"
                 placeholder="City Tour, Food Tour..."
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
-              <SearchInput
+              <DatePickerInput
                 label="Date"
                 placeholder="Select date"
                 value={date}
-                onChange={(e) => setDate(e.target.value)}
+                onChange={setDate}
               />
               <button className="w-14 h-14 bg-venture-black rounded-[20px] flex items-center justify-center text-venture-green cursor-pointer transition-transform duration-200 border-none hover:scale-105">
                 <svg
