@@ -29,6 +29,7 @@
     "db:migrate": "turbo -F @rnadventure/db db:migrate",
     "db:local": "turbo -F @rnadventure/db db:local",
     "check": "oxlint && oxfmt --write",
+    "fix": "oxlint --fix --fix-suggestions",
     "prepare": "husky"
   },
   "dependencies": {

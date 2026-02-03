@@ -18,7 +18,7 @@ export default function DatePickerInput({
 }) {
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger>
         <div className="px-5 flex flex-col justify-center border-r border-[#eee] cursor-pointer">
           <label className="text-xs font-bold text-[#888] mb-1 uppercase tracking-wider text-left">
             {label}
