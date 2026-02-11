@@ -34,7 +34,7 @@ const categories = [
 
 export function CategoriesSection() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-green-50">
       <div className="max-w-[1240px] mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -60,7 +60,7 @@ export function CategoriesSection() {
                   </div>
                   <h3 className="text-xl font-semibold mb-2">{category.name}</h3>
                   <p className="text-gray-600 text-sm mb-3">{category.description}</p>
-                  <span className="text-venture-green font-medium">{category.count} tours →</span>
+                  <span className="text-venture-green font-bold">{category.count} tours →</span>
                 </div>
               </Link>
             );
