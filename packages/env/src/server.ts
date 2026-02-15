@@ -13,7 +13,7 @@ export const env = createEnv({
     STRIPE_SECRET_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
     // Admin seed credentials
-    ADMIN_EMAIL: z.string().email().optional(),
+    ADMIN_EMAIL: z.email().optional(),
     ADMIN_PASSWORD: z.string().min(8).optional(),
     ADMIN_NAME: z.string().optional(),
   },
