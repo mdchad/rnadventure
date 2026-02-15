@@ -1,6 +1,4 @@
 import { Suspense } from "react";
-import { auth } from "@rnadventure/auth";
-import { headers } from "next/headers";
 import Navigation from "@/components/landing/navigation";
 import { Footer } from "@/components/layout/footer";
 import { TourGrid } from "@/components/tour/tour-grid";
@@ -43,11 +41,9 @@ async function ToursList({ searchParams }: ToursPageProps) {
 }
 
 export default async function ToursPage({ searchParams }: ToursPageProps) {
-  const session = await auth.api.getSession({ headers: await headers() });
-
   return (
     <div className="min-h-screen bg-white">
-      <Navigation user={session?.user} />
+      <Navigation />
 
       {/* Page Header */}
       <div className="bg-gradient-to-r from-venture-green to-venture-hover py-20">

@@ -29,13 +29,12 @@ export function HeroSection() {
             landmarks, create unforgettable memories.
           </p>
           <Button
-            asChild
             size="lg"
             className="bg-venture-green text-venture-black hover:bg-venture-hover font-semibold text-lg px-8 py-6 rounded-full"
           >
-            <Link href="/tours">
-              Explore Tours
-              <ArrowRight className="ml-2 h-5 w-5" />
+            <Link href="/tours" className="flex items-center gap-2">
+              <span>Explore Tours</span>
+              <ArrowRight className="h-5 w-5" />
             </Link>
           </Button>
         </div>

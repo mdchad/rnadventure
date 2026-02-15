@@ -42,7 +42,7 @@ export function FeaturedToursSection({ tours }: FeaturedToursSectionProps) {
         </div>
 
         <div className="text-center">
-          <Button asChild size="lg" variant="outline" className="rounded-full px-8">
+          <Button size="lg" variant="outline" className="rounded-full px-8">
             <Link href="/tours">
               View All Tours
               <ArrowRight className="ml-2 h-4 w-4" />

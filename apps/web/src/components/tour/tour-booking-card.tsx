@@ -94,12 +94,12 @@ export function TourBookingCard({ tour }: TourBookingCardProps) {
       </div>
 
       {/* Book Now Button */}
-      <Button
-        asChild
-        className="w-full bg-venture-green text-venture-black hover:bg-venture-hover font-semibold text-lg py-6 rounded-full"
+      <Link
+        href={`/booking/${tour.id}?people=${numberOfPeople}`}
+        className="block w-full bg-venture-green text-venture-black hover:bg-venture-hover font-semibold text-lg py-6 rounded-full text-center transition-colors"
       >
-        <Link href={`/booking/${tour.id}?people=${numberOfPeople}`}>Book Now</Link>
-      </Button>
+        Book Now
+      </Link>
 
       <p className="text-center text-sm text-gray-500 mt-4">
         Free cancellation up to 24 hours before the tour

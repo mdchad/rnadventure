@@ -1,7 +1,6 @@
 import { TourCardEnhanced } from "./tour-card-enhanced";
 import { Compass } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 interface TourGridProps {
   tours: Array<{
@@ -33,9 +32,12 @@ export function TourGrid({ tours }: TourGridProps) {
         </div>
         <h3 className="text-2xl font-bold mb-2">No tours found</h3>
         <p className="text-gray-600 mb-8">Try adjusting your filters or explore all tours</p>
-        <Button asChild variant="outline">
-          <Link href="/tours">View All Tours</Link>
-        </Button>
+        <Link
+          href="/tours"
+          className="inline-block px-6 py-3 border-2 border-gray-300 hover:bg-gray-100 rounded-lg font-semibold transition-colors"
+        >
+          View All Tours
+        </Link>
       </div>
     );
   }

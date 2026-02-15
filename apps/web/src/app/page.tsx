@@ -1,6 +1,4 @@
 import { Suspense } from "react";
-import { auth } from "@rnadventure/auth";
-import { headers } from "next/headers";
 import Navigation from "@/components/landing/navigation";
 import { HeroSection } from "@/components/landing/hero-section";
 import { CategoriesSection } from "@/components/landing/categories-section";
@@ -22,11 +20,9 @@ async function Stats() {
 }
 
 export default async function HomePage() {
-  const session = await auth.api.getSession({ headers: await headers() });
-
   return (
     <div className="min-h-screen bg-white">
-      <Navigation user={session?.user} />
+      <Navigation />
 
       <HeroSection />
 

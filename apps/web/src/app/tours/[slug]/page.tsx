@@ -1,7 +1,5 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { auth } from "@rnadventure/auth";
-import { headers } from "next/headers";
 import Navigation from "@/components/landing/navigation";
 import { Footer } from "@/components/layout/footer";
 import { TourDetailHero } from "@/components/tour/tour-detail-hero";
@@ -14,13 +12,14 @@ import { RelatedToursSection } from "@/components/tour/related-tours-section";
 import { getTourBySlug, getRelatedTours } from "@/actions/tours";
 
 interface TourDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({ params }: TourDetailPageProps): Promise<Metadata> {
-  const tour = await getTourBySlug(params.slug);
+  const { slug } = await params;
+  const tour = await getTourBySlug(slug);
 
   if (!tour) {
     return {
@@ -40,8 +39,8 @@ export async function generateMetadata({ params }: TourDetailPageProps): Promise
 }
 
 export default async function TourDetailPage({ params }: TourDetailPageProps) {
-  const session = await auth.api.getSession({ headers: await headers() });
-  const tour = await getTourBySlug(params.slug);
+  const { slug } = await params;
+  const tour = await getTourBySlug(slug);
 
   if (!tour) {
     notFound();
@@ -51,7 +50,7 @@ export default async function TourDetailPage({ params }: TourDetailPageProps) {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navigation user={session?.user} />
+      <Navigation />
 
       <TourDetailHero tour={tour} />
 

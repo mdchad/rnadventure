@@ -25,7 +25,6 @@ export function CTASection() {
           today and create memories that last a lifetime.
         </p>
         <Button
-          asChild
           size="lg"
           className="bg-venture-green text-venture-black hover:bg-venture-hover font-semibold text-lg px-10 py-7 rounded-full"
         >

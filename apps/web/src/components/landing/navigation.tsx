@@ -2,16 +2,13 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronDown, User, LogOut } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
@@ -39,16 +36,7 @@ const tourCategories = [
   { name: "Edutrips", href: "/tours?category=Edutrip" },
 ];
 
-interface NavigationProps {
-  user?: {
-    id: string;
-    name: string;
-    email: string;
-    image?: string | null;
-  } | null;
-}
-
-export default function Navigation({ user }: NavigationProps) {
+export default function Navigation() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -86,7 +74,7 @@ export default function Navigation({ user }: NavigationProps) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-48">
               {tourCategories.map((category) => (
-                <DropdownMenuItem key={category.name} asChild>
+                <DropdownMenuItem key={category.name}>
                   <Link href={category.href} className="cursor-pointer">
                     {category.name}
                   </Link>
@@ -98,77 +86,20 @@ export default function Navigation({ user }: NavigationProps) {
           <NavLink href="/about">About</NavLink>
           <NavLink href="/contact">Contact</NavLink>
 
-          {/* User Section */}
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="outline-none ml-4">
-                <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 rounded-full bg-venture-green flex items-center justify-center text-venture-black font-semibold">
-                    {user.image ? (
-                      <img
-                        src={user.image}
-                        alt={user.name}
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    ) : (
-                      user.name.charAt(0).toUpperCase()
-                    )}
-                  </div>
-                  <ChevronDown className="h-4 w-4" />
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col">
-                    <span className="font-semibold">{user.name}</span>
-                    <span className="text-xs text-gray-500">{user.email}</span>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard" className="cursor-pointer">
-                    <User className="mr-2 h-4 w-4" />
-                    Dashboard
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard/bookings" className="cursor-pointer">
-                    My Bookings
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <form action="/api/auth/sign-out" method="POST" className="w-full">
-                    <button type="submit" className="flex items-center w-full">
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
-                    </button>
-                  </form>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <>
-              <Link
-                href="/login"
-                className="no-underline text-[#1a1a1a] font-bold text-[0.95rem] transition-colors duration-200 hover:text-venture-hover ml-4"
-              >
-                Log in
-              </Link>
-              <Button
-                asChild
-                className="bg-venture-green text-venture-black hover:bg-venture-hover"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
-              >
-                <Link href="/register">Sign Up</Link>
-              </Button>
-            </>
-          )}
+          <Link
+            href="/tours"
+            className="ml-4 px-6 py-2 bg-venture-green text-venture-black hover:bg-venture-hover font-bold rounded-full transition-colors duration-200"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            Book a Tour
+          </Link>
         </div>
 
         {/* Mobile Menu */}
-        <MobileMenu user={user} />
+        <div className="lg:hidden">
+          <MobileMenu />
+        </div>
       </div>
     </nav>
   );
