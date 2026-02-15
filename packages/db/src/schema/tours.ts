@@ -107,9 +107,7 @@ export const booking = sqliteTable(
     tourId: text("tour_id")
       .notNull()
       .references(() => tour.id, { onDelete: "restrict" }),
-    userId: text("user_id")
-      .notNull()
-      .references(() => user.id, { onDelete: "restrict" }),
+    userId: text("user_id").references(() => user.id, { onDelete: "restrict" }),
 
     // Booking details
     date: integer("date", { mode: "timestamp_ms" }).notNull(),
