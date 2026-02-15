@@ -51,14 +51,16 @@ export function AdminLoginForm() {
   };
 
   return (
-    <Card>
+    <Card className="dark:bg-gray-900 dark:border-gray-800">
       <CardHeader>
-        <CardTitle>Sign In</CardTitle>
+        <CardTitle className="dark:text-white">Sign In</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email" className="dark:text-gray-200">
+              Email
+            </Label>
             <Input
               id="email"
               type="email"
@@ -71,7 +73,9 @@ export function AdminLoginForm() {
           </div>
 
           <div>
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="dark:text-gray-200">
+              Password
+            </Label>
             <Input
               id="password"
               type="password"
