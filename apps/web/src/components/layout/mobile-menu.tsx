@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import type { Route } from "next";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
@@ -58,7 +59,7 @@ export function MobileMenu() {
               {tourCategories.map((category) => (
                 <Link
                   key={category.name}
-                  href={category.href}
+                  href={category.href as Route}
                   className="text-gray-600 hover:text-venture-green transition-colors"
                   onClick={() => setOpen(false)}
                 >
@@ -70,7 +71,7 @@ export function MobileMenu() {
 
           {/* About Link */}
           <Link
-            href="/about"
+            href={"/" as Route}
             className="text-lg font-medium hover:text-venture-green transition-colors"
             onClick={() => setOpen(false)}
           >
@@ -79,7 +80,7 @@ export function MobileMenu() {
 
           {/* Contact Link */}
           <Link
-            href="/contact"
+            href={"/" as Route}
             className="text-lg font-medium hover:text-venture-green transition-colors"
             onClick={() => setOpen(false)}
           >
