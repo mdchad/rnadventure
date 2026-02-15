@@ -6,20 +6,21 @@ import { getTours } from "@/actions/tours";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface ToursPageProps {
-  searchParams: {
+  searchParams: Promise<{
     category?: string;
     search?: string;
     minPrice?: string;
     maxPrice?: string;
-  };
+  }>;
 }
 
 async function ToursList({ searchParams }: ToursPageProps) {
+  const params = await searchParams;
   const filters = {
-    category: searchParams.category,
-    search: searchParams.search,
-    minPrice: searchParams.minPrice ? parseInt(searchParams.minPrice) : undefined,
-    maxPrice: searchParams.maxPrice ? parseInt(searchParams.maxPrice) : undefined,
+    category: params.category,
+    search: params.search,
+    minPrice: params.minPrice ? parseInt(params.minPrice) : undefined,
+    maxPrice: params.maxPrice ? parseInt(params.maxPrice) : undefined,
   };
 
   const tours = await getTours(filters);
@@ -28,7 +29,7 @@ async function ToursList({ searchParams }: ToursPageProps) {
     <div className="py-12">
       <div className="max-w-[1240px] mx-auto px-6">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-2">{searchParams.category || "All Tours"}</h2>
+          <h2 className="text-3xl font-bold mb-2">{params.category || "All Tours"}</h2>
           <p className="text-gray-600">
             {tours.length} {tours.length === 1 ? "tour" : "tours"} found
           </p>
