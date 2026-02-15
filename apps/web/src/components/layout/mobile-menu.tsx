@@ -93,7 +93,7 @@ export function MobileMenu() {
               className="block w-full bg-venture-green text-venture-black hover:bg-venture-hover font-semibold py-3 px-4 rounded-lg text-center transition-colors"
               onClick={() => setOpen(false)}
             >
-              Book a Tour With Us
+              Book a Tour
             </Link>
           </div>
         </nav>
