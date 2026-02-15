@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Route } from "next";
 import { Facebook, Instagram, Twitter, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,10 +12,10 @@ const tourCategories = [
 ];
 
 const quickLinks = [
-  { name: "About Us", href: "/about" },
-  { name: "Contact", href: "/contact" },
-  { name: "Terms of Service", href: "/terms" },
-  { name: "Privacy Policy", href: "/privacy" },
+  { name: "About Us", href: "/" },
+  { name: "Contact", href: "/" },
+  { name: "Terms of Service", href: "/" },
+  { name: "Privacy Policy", href: "/" },
 ];
 
 export function Footer() {
@@ -64,7 +65,7 @@ export function Footer() {
               {tourCategories.map((category) => (
                 <li key={category.name}>
                   <Link
-                    href={category.href}
+                    href={category.href as Route}
                     className="text-gray-400 hover:text-venture-green transition-colors"
                   >
                     {category.name}
@@ -81,7 +82,7 @@ export function Footer() {
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <Link
-                    href={link.href}
+                    href={link.href as Route}
                     className="text-gray-400 hover:text-venture-green transition-colors"
                   >
                     {link.name}
@@ -117,19 +118,19 @@ export function Footer() {
             </p>
             <div className="flex gap-6 text-sm">
               <Link
-                href="/terms"
+                href={"/" as Route}
                 className="text-gray-400 hover:text-venture-green transition-colors"
               >
                 Terms
               </Link>
               <Link
-                href="/privacy"
+                href={"/" as Route}
                 className="text-gray-400 hover:text-venture-green transition-colors"
               >
                 Privacy
               </Link>
               <Link
-                href="/cookies"
+                href={"/" as Route}
                 className="text-gray-400 hover:text-venture-green transition-colors"
               >
                 Cookies

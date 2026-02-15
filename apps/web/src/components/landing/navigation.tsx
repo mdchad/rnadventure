@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { Route } from "next";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import {
@@ -16,7 +17,7 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
 
   return (
     <Link
-      href={href}
+      href={href as Route}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={`text-[0.95rem] font-medium transition-colors duration-200 ${
@@ -75,7 +76,7 @@ export default function Navigation() {
             <DropdownMenuContent align="start" className="w-48">
               {tourCategories.map((category) => (
                 <DropdownMenuItem key={category.name}>
-                  <Link href={category.href} className="cursor-pointer">
+                  <Link href={category.href as Route} className="cursor-pointer">
                     {category.name}
                   </Link>
                 </DropdownMenuItem>

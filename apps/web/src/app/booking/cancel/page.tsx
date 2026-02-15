@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Navigation from "@/components/landing/navigation";
 import { Footer } from "@/components/layout/footer";
 import { XCircle } from "lucide-react";
@@ -77,10 +77,7 @@ export default async function BookingCancelPage() {
         {/* Support Section */}
         <div className="mt-8 text-center">
           <p className="text-gray-600 text-sm">
-            Need help?{" "}
-            <Link href="/contact" className="text-venture-green font-semibold hover:underline">
-              Contact our support team
-            </Link>
+            Need help? Contact our support team at support@rnadventure.com
           </p>
         </div>
       </div>

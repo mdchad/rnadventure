@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Route } from "next";
 import { MapPin, Utensils, Building, GraduationCap } from "lucide-react";
 
 const categories = [
@@ -51,7 +52,7 @@ export function CategoriesSection() {
             return (
               <Link
                 key={category.name}
-                href={category.href}
+                href={category.href as Route}
                 className="group relative bg-white rounded-3xl p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="flex flex-col items-center text-center">
