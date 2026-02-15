@@ -39,10 +39,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Create booking in database (without userId for now)
+    // Create booking in database (guest checkout - no userId)
     const booking = await createBooking({
       tourId,
-      userId: "guest", // Guest checkout
+      userId: null, // Guest checkout
       date: new Date(date),
       numberOfPeople,
       customerName,

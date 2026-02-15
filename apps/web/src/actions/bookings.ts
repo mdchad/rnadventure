@@ -7,7 +7,7 @@ import { nanoid } from "nanoid";
 
 export interface CreateBookingInput {
   tourId: string;
-  userId: string;
+  userId: string | null;
   date: Date;
   numberOfPeople: number;
   customerName: string;
