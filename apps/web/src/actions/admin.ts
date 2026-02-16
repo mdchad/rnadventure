@@ -1,8 +1,10 @@
 "use server";
 
 import { db } from "@rnadventure/db";
-import { booking, tour } from "@rnadventure/db/schema";
+import { booking, tour, user } from "@rnadventure/db/schema";
 import { desc, count, sum, eq, sql } from "drizzle-orm";
+import { auth } from "@rnadventure/auth";
+import { headers } from "next/headers";
 
 export async function getAdminStats() {
   // Total bookings
@@ -122,4 +124,113 @@ export async function getBookingStats() {
     byPaymentStatus: paymentStats,
     recentCount: recentBookingsResult?.count || 0,
   };
+}
+
+/**
+ * Get all admin users
+ */
+export async function getAllAdminUsers() {
+  const admins = await db.query.user.findMany({
+    where: eq(user.role, "admin"),
+    columns: {
+      id: true,
+      email: true,
+      name: true,
+      emailVerified: true,
+      createdAt: true,
+      role: true,
+    },
+    orderBy: [desc(user.createdAt)],
+  });
+
+  return admins;
+}
+
+/**
+ * Create a new admin user
+ */
+export async function createAdminUser(data: { name: string; email: string; password: string }) {
+  try {
+    // Create user with signUpEmail
+    const newUser = await auth.api.signUpEmail({
+      body: {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      },
+    });
+
+    // Check if user was created successfully
+    if ("user" in newUser && newUser.user?.id) {
+      // Use Better Auth's admin API to set the role
+      await auth.api.setRole({
+        headers: await headers(),
+        body: {
+          userId: newUser.user.id,
+          role: "admin",
+        },
+      });
+
+      return {
+        success: true,
+        message: "Admin user created successfully",
+        userId: newUser.user.id,
+      };
+    }
+
+    return {
+      success: false,
+      message: "Failed to create admin user",
+    };
+  } catch (error: any) {
+    console.error("Error creating admin user:", error);
+
+    // Check if user already exists
+    if (error?.message?.includes("already exists") || error?.message?.includes("unique")) {
+      return {
+        success: false,
+        message: "User with this email already exists",
+      };
+    }
+
+    return {
+      success: false,
+      message: error?.message || "Failed to create admin user",
+    };
+  }
+}
+
+/**
+ * Delete admin user
+ */
+export async function deleteAdminUser(userId: string) {
+  try {
+    // Check how many admins exist
+    const [adminCount] = await db
+      .select({ count: count() })
+      .from(user)
+      .where(eq(user.role, "admin"));
+
+    // Prevent deleting the last admin
+    if (adminCount.count <= 1) {
+      return {
+        success: false,
+        message: "Cannot delete the last admin user",
+      };
+    }
+
+    // Delete the user
+    await db.delete(user).where(eq(user.id, userId));
+
+    return {
+      success: true,
+      message: "Admin user deleted successfully",
+    };
+  } catch (error: any) {
+    console.error("Error deleting admin user:", error);
+    return {
+      success: false,
+      message: error?.message || "Failed to delete admin user",
+    };
+  }
 }
