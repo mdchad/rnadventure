@@ -13,7 +13,7 @@ export const env = createEnv({
     STRIPE_SECRET_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
     RESEND_API_KEY: z.string().min(1),
-    RESEND_FROM_EMAIL: z.string().email().default("bookings@rnadventure.com"),
+    RESEND_FROM_EMAIL: z.email().default("bookings@pixelmindstudio.com"),
     // Admin seed credentials
     ADMIN_EMAIL: z.email().optional(),
     ADMIN_PASSWORD: z.string().min(8).optional(),
