@@ -23,7 +23,7 @@ export function MobileMenu() {
       <SheetTrigger>
         <Menu className="h-6 w-6" />
       </SheetTrigger>
-      <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+      <SheetContent side="right" className="w-[300px] sm:w-[400px] px-8 py-12">
         <SheetHeader>
           <SheetTitle>
             <span className="text-venture-green">RN</span>Adventure
@@ -91,7 +91,7 @@ export function MobileMenu() {
           <div className="mt-auto pt-6">
             <Link
               href="/tours"
-              className="block w-full bg-venture-green text-venture-black hover:bg-venture-hover font-semibold py-3 px-4 rounded-lg text-center transition-colors"
+              className="block text-lg w-full bg-venture-green text-venture-black hover:bg-venture-hover font-semibold py-3 px-4 rounded-lg text-center transition-colors"
               onClick={() => setOpen(false)}
             >
               Book a Tour

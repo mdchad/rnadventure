@@ -43,9 +43,14 @@ export function FeaturedToursSection({ tours }: FeaturedToursSectionProps) {
 
         <div className="text-center">
           <Button size="lg" variant="outline" className="rounded-full px-8">
-            <Link href="/tours">
-              View All Tours
-              <ArrowRight className="ml-2 h-4 w-4" />
+            <Link
+              href="/tours"
+              className="flex items-center gap-2"
+              aria-label="View All Tours"
+              title="View All Tours"
+            >
+              <span>View All Tours</span>
+              <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
         </div>

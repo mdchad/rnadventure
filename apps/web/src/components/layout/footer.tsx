@@ -21,7 +21,7 @@ const quickLinks = [
 export function Footer() {
   return (
     <footer className="bg-venture-black text-white">
-      <div className="container-venture py-16">
+      <div className="container-venture py-16 px-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* About Column */}
