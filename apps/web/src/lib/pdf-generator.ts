@@ -216,8 +216,9 @@ export async function generateItineraryPDF(booking: BookingData): Promise<Uint8A
   }
 
   // Itinerary Details
+  let currentPage = page;
   if (booking.itinerary && booking.itinerary.length > 0) {
-    page.drawText("ITINERARY", {
+    currentPage.drawText("ITINERARY", {
       x: 50,
       y: yPosition,
       size: 14,
@@ -229,79 +230,64 @@ export async function generateItineraryPDF(booking: BookingData): Promise<Uint8A
     for (let i = 0; i < booking.itinerary.length; i++) {
       const item = booking.itinerary[i];
 
-      if (yPosition < 100) {
-        // Add new page if needed
-        const newPage = pdf.addPage({ size: "a4" });
-        yPosition = 800;
+      // Calculate approximate height needed for this item
+      let itemHeight = 18; // title
+      if (item.description) itemHeight += 30;
+      if (item.duration || item.location) itemHeight += 25;
 
-        newPage.drawText(`${i + 1}. ${item.title}`, {
-          x: 50,
+      // Check if we need a new page (leaving 100px margin at bottom)
+      if (yPosition - itemHeight < 100) {
+        // Add new page
+        currentPage = pdf.addPage({ size: "a4" });
+        yPosition = 752; // Start below where header would be
+      }
+
+      // Draw item title
+      currentPage.drawText(`${i + 1}. ${item.title}`, {
+        x: 50,
+        y: yPosition,
+        size: 11,
+        color: rgb(0, 0, 0),
+      });
+      yPosition -= 18;
+
+      // Draw description if exists
+      if (item.description) {
+        currentPage.drawText(item.description, {
+          x: 60,
           y: yPosition,
-          size: 11,
-          color: rgb(0, 0, 0),
+          size: 9,
+          color: rgb(0.4, 0.4, 0.4),
+          maxWidth: 475,
         });
-        yPosition -= 18;
+        yPosition -= 30;
+      }
 
-        if (item.description) {
-          newPage.drawText(item.description, {
-            x: 60,
-            y: yPosition,
-            size: 9,
-            color: rgb(0.4, 0.4, 0.4),
-            maxWidth: 475,
-          });
-          yPosition -= 30;
-        }
-
-        if (item.duration || item.location) {
-          const details = [item.duration, item.location].filter(Boolean).join(" | ");
-          newPage.drawText(details, {
-            x: 60,
-            y: yPosition,
-            size: 9,
-            color: rgb(0.5, 0.5, 0.5),
-          });
-          yPosition -= 25;
-        }
-      } else {
-        page.drawText(`${i + 1}. ${item.title}`, {
-          x: 50,
+      // Draw duration and location if exists
+      if (item.duration || item.location) {
+        const details = [item.duration, item.location].filter(Boolean).join(" | ");
+        currentPage.drawText(details, {
+          x: 60,
           y: yPosition,
-          size: 11,
-          color: rgb(0, 0, 0),
+          size: 9,
+          color: rgb(0.5, 0.5, 0.5),
         });
-        yPosition -= 18;
-
-        if (item.description) {
-          page.drawText(item.description, {
-            x: 60,
-            y: yPosition,
-            size: 9,
-            color: rgb(0.4, 0.4, 0.4),
-            maxWidth: 475,
-          });
-          yPosition -= 30;
-        }
-
-        if (item.duration || item.location) {
-          const details = [item.duration, item.location].filter(Boolean).join(" | ");
-          page.drawText(details, {
-            x: 60,
-            y: yPosition,
-            size: 9,
-            color: rgb(0.5, 0.5, 0.5),
-          });
-          yPosition -= 25;
-        }
+        yPosition -= 25;
       }
     }
   }
 
   // Special Requests (if any)
-  if (booking.specialRequests && yPosition > 100) {
+  if (booking.specialRequests) {
+    // Check if we need space for special requests section (approx 100px)
+    if (yPosition < 150) {
+      currentPage = pdf.addPage({ size: "a4" });
+      yPosition = 752;
+    }
+
     yPosition -= 20;
 
-    page.drawLine({
+    currentPage.drawLine({
       start: { x: 50, y: yPosition },
       end: { x: 545, y: yPosition },
       color: rgb(0.8, 0.8, 0.8),
@@ -310,7 +296,7 @@ export async function generateItineraryPDF(booking: BookingData): Promise<Uint8A
 
     yPosition -= 25;
 
-    page.drawText("SPECIAL REQUESTS", {
+    currentPage.drawText("SPECIAL REQUESTS", {
       x: 50,
       y: yPosition,
       size: 12,
@@ -319,7 +305,7 @@ export async function generateItineraryPDF(booking: BookingData): Promise<Uint8A
 
     yPosition -= 20;
 
-    page.drawText(booking.specialRequests, {
+    currentPage.drawText(booking.specialRequests, {
       x: 50,
       y: yPosition,
       size: 10,
@@ -328,8 +314,8 @@ export async function generateItineraryPDF(booking: BookingData): Promise<Uint8A
     });
   }
 
-  // Footer
-  page.drawText("For any questions, please contact us at support@rnadventure.com", {
+  // Footer on the last page
+  currentPage.drawText("For any questions, please contact us at support@rnadventure.com", {
     x: 50,
     y: 50,
     size: 9,
@@ -349,15 +335,15 @@ export async function generateReceiptPDF(booking: BookingData): Promise<Uint8Arr
   pdf.setSubject(`Booking Confirmation for ${booking.tourTitle}`);
 
   const page = pdf.addPage({ size: "a4" });
-  let yPosition = 790;
+  let yPosition = 752;
 
   // Header
   page.drawRectangle({
     x: 0,
     y: yPosition,
     width: 595,
-    height: 70,
-    color: rgb(0.4, 0.71, 0.55),
+    height: 90,
+    color: rgb(0.02, 0.902, 0.408), // venture-green equivalent
   });
 
   page.drawText("BOOKING CONFIRMATION", {
