@@ -87,6 +87,15 @@ export function MobileMenu() {
             Contact
           </Link>
 
+          {/* Find Booking Link */}
+          <Link
+            href="/booking/lookup"
+            className="text-lg font-medium hover:text-venture-green transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            Find Booking
+          </Link>
+
           {/* CTA */}
           <div className="mt-auto pt-6">
             <Link

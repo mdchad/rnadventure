@@ -86,6 +86,7 @@ export default function Navigation() {
 
           <NavLink href="/about">About</NavLink>
           <NavLink href="/contact">Contact</NavLink>
+          <NavLink href="/booking/lookup">Find Booking</NavLink>
 
           <Link
             href="/tours"

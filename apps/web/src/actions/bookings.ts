@@ -156,7 +156,16 @@ export async function getBookingByStripeSessionId(sessionId: string) {
   const bookingData = await db.query.booking.findFirst({
     where: eq(booking.stripeSessionId, sessionId),
     with: {
-      tour: true,
+      tour: {
+        with: {
+          itinerary: {
+            orderBy: (itinerary, { asc }) => [asc(itinerary.order)],
+          },
+          highlights: {
+            orderBy: (highlights, { asc }) => [asc(highlights.order)],
+          },
+        },
+      },
       user: {
         columns: {
           id: true,
@@ -198,6 +207,33 @@ export async function getUserBookings(userId: string) {
   });
 
   return bookings;
+}
+
+export async function getBookingByBookingNumber(bookingNumber: string) {
+  const bookingData = await db.query.booking.findFirst({
+    where: eq(booking.bookingNumber, bookingNumber.toUpperCase()),
+    with: {
+      tour: {
+        with: {
+          itinerary: {
+            orderBy: (itinerary, { asc }) => [asc(itinerary.order)],
+          },
+          highlights: {
+            orderBy: (highlights, { asc }) => [asc(highlights.order)],
+          },
+        },
+      },
+      user: {
+        columns: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return bookingData;
 }
 
 function generateBookingNumber(): string {

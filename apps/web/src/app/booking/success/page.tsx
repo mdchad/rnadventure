@@ -6,6 +6,7 @@ import { getBookingByStripeSessionId } from "@/actions/bookings";
 import { CheckCircle, Calendar, MapPin, Users, Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
+import { DownloadDocuments } from "@/components/booking/download-documents";
 
 export const metadata: Metadata = {
   title: "Booking Confirmed | RNAdventure",
@@ -143,6 +144,9 @@ export default async function BookingSuccessPage({ searchParams }: SuccessPagePr
             </div>
           </div>
         </div>
+
+        {/* Download Documents */}
+        <DownloadDocuments booking={booking} />
 
         {/* Important Information */}
         <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6 mb-6">

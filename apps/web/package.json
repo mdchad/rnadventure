@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
+    "@libpdf/core": "^0.2.7",
     "@libsql/client": "catalog:",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@rnadventure/auth": "workspace:*",
