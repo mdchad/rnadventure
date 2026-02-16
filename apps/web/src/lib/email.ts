@@ -40,7 +40,7 @@ export function generateICalendar(data: BookingEmailData): string {
   const dtend = formatICalDate(endDate);
 
   const dtstamp = formatICalDate(now);
-  const uid = `booking-${data.bookingNumber}@pixelmindstudio.com`;
+  const uid = `booking-${data.bookingNumber}@bookings.pixelmindstudio.co`;
 
   // Create attendee list
   const attendees = [`ATTENDEE;CN="${data.customerName}";RSVP=TRUE:mailto:${data.customerEmail}`];

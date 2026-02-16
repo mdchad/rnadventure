@@ -27,43 +27,42 @@ async function createAdmin() {
       },
     });
 
-    if (newUser.error) {
-      console.error("❌ Error:", newUser.error.message);
-
-      // If user exists, try to update role
-      if (newUser.error.message.includes("already exists")) {
-        console.log("⚠️  User already exists. Updating role to admin...");
-
-        // Find user and update role
-        const existingUser = await db.query.user.findFirst({
-          where: eq(user.email, email),
-        });
-
-        if (existingUser) {
-          await db.update(user).set({ role: "admin" }).where(eq(user.id, existingUser.id));
-
-          console.log("✅ User role updated to admin!");
-        }
-      }
-
-      if (!newUser.error.message.includes("already exists")) {
-        process.exit(1);
-      }
-    } else {
+    // Check if user was created successfully
+    if ("user" in newUser && newUser.user?.id) {
       // Step 2: Update the user's role to admin in the database
-      if (newUser.data?.user?.id) {
-        await db.update(user).set({ role: "admin" }).where(eq(user.id, newUser.data.user.id));
+      await db.update(user).set({ role: "admin" }).where(eq(user.id, newUser.user.id));
 
-        console.log("✅ Admin user created successfully!");
-      }
+      console.log("✅ Admin user created successfully!");
     }
 
     console.log("\nLogin credentials:");
     console.log(`Email: ${email}`);
     console.log(`Password: ${password}`);
     console.log("\nYou can now login at: http://localhost:3001/admin/login");
-  } catch (error) {
+  } catch (error: any) {
     console.error("❌ Error creating admin user:", error);
+
+    // If user exists, try to update role
+    if (error?.message?.includes("already exists") || error?.message?.includes("unique")) {
+      console.log("⚠️  User already exists. Updating role to admin...");
+
+      // Find user and update role
+      const existingUser = await db.query.user.findFirst({
+        where: eq(user.email, email),
+      });
+
+      if (existingUser) {
+        await db.update(user).set({ role: "admin" }).where(eq(user.id, existingUser.id));
+
+        console.log("✅ User role updated to admin!");
+        console.log("\nLogin credentials:");
+        console.log(`Email: ${email}`);
+        console.log(`Password: ${password}`);
+        console.log("\nYou can now login at: http://localhost:3001/admin/login");
+        process.exit(0);
+      }
+    }
+
     process.exit(1);
   }
 
