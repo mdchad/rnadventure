@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "create-admin": "bun --env-file=.env run src/scripts/create-admin.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.0.0",
+    "@libpdf/core": "^0.2.7",
     "@libsql/client": "catalog:",
     "@radix-ui/react-collapsible": "^1.1.12",
     "@rnadventure/auth": "workspace:*",

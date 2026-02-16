@@ -35,6 +35,7 @@
   "dependencies": {
     "@rnadventure/env": "workspace:*",
     "dotenv": "catalog:",
+    "resend": "^6.9.2",
     "zod": "catalog:"
   },
   "devDependencies": {

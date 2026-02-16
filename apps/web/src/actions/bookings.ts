@@ -4,6 +4,8 @@ import { db } from "@rnadventure/db";
 import { booking, tour } from "@rnadventure/db/schema";
 import { eq, sql } from "drizzle-orm";
 import { nanoid } from "nanoid";
+import { sendBookingConfirmationToAdmin } from "@/lib/email";
+import { env } from "@rnadventure/env/server";
 
 export interface CreateBookingInput {
   tourId: string;
@@ -93,7 +95,7 @@ export async function confirmBooking(bookingId: string) {
     .where(eq(booking.id, bookingId))
     .returning();
 
-  // Update tour booking count
+  // Update tour booking count and send email notification
   if (confirmedBooking) {
     await db
       .update(tour)
@@ -101,6 +103,37 @@ export async function confirmBooking(bookingId: string) {
         bookingCount: sql`${tour.bookingCount} + 1`,
       })
       .where(eq(tour.id, confirmedBooking.tourId));
+
+    // Get full booking details with tour information
+    const fullBooking = await db.query.booking.findFirst({
+      where: eq(booking.id, bookingId),
+      with: {
+        tour: true,
+      },
+    });
+
+    // Send email to admin if available
+    if (fullBooking && env.ADMIN_EMAIL && env.ADMIN_NAME) {
+      await sendBookingConfirmationToAdmin({
+        adminEmail: env.ADMIN_EMAIL,
+        adminName: env.ADMIN_NAME,
+        bookingData: {
+          bookingNumber: fullBooking.bookingNumber,
+          tourTitle: fullBooking.tour.title,
+          tourLocation: fullBooking.tour.location,
+          customerName: fullBooking.customerName,
+          customerEmail: fullBooking.customerEmail,
+          customerPhone: fullBooking.customerPhone || undefined,
+          numberOfPeople: fullBooking.numberOfPeople,
+          bookingDate: fullBooking.date,
+          totalPrice: fullBooking.totalPrice,
+          currency: fullBooking.tour.currency,
+          specialRequests: fullBooking.specialRequests || undefined,
+          tourDuration: fullBooking.tour.duration,
+          meetingPoint: fullBooking.tour.meetingPoint || undefined,
+        },
+      });
+    }
   }
 
   return confirmedBooking;
@@ -123,7 +156,16 @@ export async function getBookingByStripeSessionId(sessionId: string) {
   const bookingData = await db.query.booking.findFirst({
     where: eq(booking.stripeSessionId, sessionId),
     with: {
-      tour: true,
+      tour: {
+        with: {
+          itinerary: {
+            orderBy: (itinerary, { asc }) => [asc(itinerary.order)],
+          },
+          highlights: {
+            orderBy: (highlights, { asc }) => [asc(highlights.order)],
+          },
+        },
+      },
       user: {
         columns: {
           id: true,
@@ -165,6 +207,33 @@ export async function getUserBookings(userId: string) {
   });
 
   return bookings;
+}
+
+export async function getBookingByBookingNumber(bookingNumber: string) {
+  const bookingData = await db.query.booking.findFirst({
+    where: eq(booking.bookingNumber, bookingNumber.toUpperCase()),
+    with: {
+      tour: {
+        with: {
+          itinerary: {
+            orderBy: (itinerary, { asc }) => [asc(itinerary.order)],
+          },
+          highlights: {
+            orderBy: (highlights, { asc }) => [asc(highlights.order)],
+          },
+        },
+      },
+      user: {
+        columns: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return bookingData;
 }
 
 function generateBookingNumber(): string {
